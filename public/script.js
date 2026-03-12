@@ -1,136 +1,77 @@
-const API="/api/products";
+body{
 
-// ADD PRODUCT
-async function addProduct(){
+font-family:Arial;
 
-const product={
+background:linear-gradient(135deg,#3f51b5,#6a1b9a);
 
-productName:document.getElementById("productName").value,
-productCode:document.getElementById("productCode").value,
-category:document.getElementById("category").value,
-supplierName:document.getElementById("supplierName").value,
-quantityInStock:document.getElementById("quantityInStock").value,
-unitPrice:document.getElementById("unitPrice").value
+color:white;
 
-};
-
-await fetch(API,{
-
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(product)
-
-});
-
-alert("Product Added");
-
-getProducts();
+padding:40px;
 
 }
 
+.container{
 
+max-width:900px;
 
-// LOAD PRODUCTS
-async function getProducts(){
-
-const res=await fetch(API);
-
-const data=await res.json();
-
-const table=document.getElementById("productTable");
-
-table.innerHTML="";
-
-data.forEach(p=>{
-
-table.innerHTML+=`
-<tr>
-
-<td>${p.productName}</td>
-
-<td>${p.category}</td>
-
-<td>${p.quantityInStock}</td>
-
-<td>${p.unitPrice}</td>
-
-<td>
-
-<button onclick="editProduct('${p._id}','${p.productName}','${p.category}','${p.quantityInStock}','${p.unitPrice}')">
-Update
-</button>
-
-<button class="delete" onclick="deleteProduct('${p._id}')">
-Delete
-</button>
-
-</td>
-
-</tr>
-`;
-
-});
+margin:auto;
 
 }
 
+.card{
 
+background:rgba(255,255,255,0.1);
 
-// DELETE PRODUCT
-async function deleteProduct(id){
+padding:20px;
 
-await fetch(API+"/"+id,{
-method:"DELETE"
-});
+border-radius:10px;
 
-getProducts();
+margin-bottom:20px;
+
+}
+
+input{
+
+padding:10px;
+
+margin:5px;
+
+border:none;
+
+border-radius:5px;
 
 }
 
+button{
 
+padding:10px 20px;
 
-// UPDATE PRODUCT
-function editProduct(id,name,category,qty,price){
+background:#ff4d4d;
 
-document.getElementById("productName").value=name;
-document.getElementById("category").value=category;
-document.getElementById("quantityInStock").value=qty;
-document.getElementById("unitPrice").value=price;
+border:none;
 
-const button=document.querySelector(".form button");
+color:white;
 
-button.innerText="Update Product";
+border-radius:6px;
 
-button.onclick=async function(){
-
-const product={
-
-productName:document.getElementById("productName").value,
-category:document.getElementById("category").value,
-quantityInStock:document.getElementById("quantityInStock").value,
-unitPrice:document.getElementById("unitPrice").value
-
-};
-
-await fetch(API+"/"+id,{
-
-method:"PUT",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(product)
-
-});
-
-alert("Product Updated");
-
-button.innerText="Add Product";
-
-button.onclick=addProduct;
-
-getProducts();
+cursor:pointer;
 
 }
+
+table{
+
+width:100%;
+
+margin-top:20px;
+
+border-collapse:collapse;
+
+}
+
+th,td{
+
+padding:10px;
+
+text-align:center;
 
 }
