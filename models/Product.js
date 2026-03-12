@@ -27,9 +27,23 @@ type:Number,
 min:0
 },
 
+reorderLevel:{
+type:Number,
+min:1
+},
+
 unitPrice:{
 type:Number,
 min:1
+},
+
+manufactureDate:{
+type:Date
+},
+
+productType:{
+type:String,
+enum:["Perishable","Non-Perishable"]
 },
 
 status:{
