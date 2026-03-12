@@ -1,77 +1,156 @@
-body{
+const API="/api/products";
 
-font-family:Arial;
 
-background:linear-gradient(135deg,#3f51b5,#6a1b9a);
+// ADD PRODUCT
 
-color:white;
+async function addProduct(){
 
-padding:40px;
+const product={
 
-}
+productName:document.getElementById("productName").value,
+productCode:document.getElementById("productCode").value,
+category:document.getElementById("category").value,
+supplierName:document.getElementById("supplierName").value,
+quantityInStock:document.getElementById("quantityInStock").value,
+unitPrice:document.getElementById("unitPrice").value
 
-.container{
+};
 
-max-width:900px;
+await fetch(API,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(product)
+});
 
-margin:auto;
+alert("Product Added Successfully");
 
-}
-
-.card{
-
-background:rgba(255,255,255,0.1);
-
-padding:20px;
-
-border-radius:10px;
-
-margin-bottom:20px;
-
-}
-
-input{
-
-padding:10px;
-
-margin:5px;
-
-border:none;
-
-border-radius:5px;
+getProducts();
 
 }
 
-button{
 
-padding:10px 20px;
 
-background:#ff4d4d;
+// GET ALL PRODUCTS
 
-border:none;
+async function getProducts(){
 
-color:white;
+const res=await fetch(API);
 
-border-radius:6px;
+const data=await res.json();
 
-cursor:pointer;
+displayProducts(data);
 
 }
 
-table{
 
-width:100%;
 
-margin-top:20px;
+// SEARCH PRODUCT
 
-border-collapse:collapse;
+async function searchProduct(){
+
+const name=document.getElementById("searchName").value;
+
+const res=await fetch(API+"/search?name="+name);
+
+const data=await res.json();
+
+displayProducts(data);
 
 }
 
-th,td{
 
-padding:10px;
 
-text-align:center;
+// FILTER CATEGORY
+
+async function filterCategory(){
+
+const cat=document.getElementById("filterCategory").value;
+
+const res=await fetch(API+"/category?cat="+cat);
+
+const data=await res.json();
+
+displayProducts(data);
+
+}
+
+
+
+// DISPLAY PRODUCTS IN TABLE
+
+function displayProducts(products){
+
+const table=document.getElementById("productTable");
+
+table.innerHTML="";
+
+products.forEach(p=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${p.productName}</td>
+<td>${p.category}</td>
+<td>${p.quantityInStock}</td>
+<td>${p.unitPrice}</td>
+
+<td>
+
+<button onclick="updateProduct('${p._id}')">Update</button>
+
+<button onclick="deleteProduct('${p._id}')">Delete</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+
+// DELETE PRODUCT
+
+async function deleteProduct(id){
+
+await fetch(API+"/"+id,{
+method:"DELETE"
+});
+
+getProducts();
+
+}
+
+
+
+// UPDATE PRODUCT
+
+async function updateProduct(id){
+
+const newPrice=prompt("Enter new price");
+
+await fetch(API+"/"+id,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+unitPrice:newPrice
+
+})
+
+});
+
+getProducts();
 
 }
