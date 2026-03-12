@@ -16,6 +16,11 @@ app.use(express.static("public"));
 
 app.use("/api", productRoutes);
 
+// 👇 यह add करो
+app.get("/", (req, res) => {
+res.sendFile(__dirname + "/public/index.html");
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
